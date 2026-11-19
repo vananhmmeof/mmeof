@@ -3,13 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gửi bạn một lời chúc</title>
+<title>Tặng Pé Híu nè</title>
+<link rel="icon" type="image/jpeg" href="./image.jpg">
 <style>
   * { box-sizing: border-box; }
   html, body { height: 100%; margin: 0; }
   body {
     font-family: "Segoe UI", system-ui, sans-serif;
-    background: linear-gradient(160deg, #ffd6e7 0%, #e4d9ff 50%, #d3ecff 100%);
+    background: linear-gradient(160deg, #cfe3ff 0%, #b9d0f5 50%, #d9e6f2 100%);
     display: flex; align-items: center; justify-content: center;
     overflow: hidden; color: #4a2c4a;
   }
@@ -35,7 +36,7 @@
   }
   @keyframes pop { from { transform: scale(.7) translateY(30px); opacity: 0; } }
   #card .emoji { font-size: 54px; }
-  #card h1 { margin: 6px 0 2px; font-size: 26px; color: #c2185b; }
+  #card h1 { margin: 6px 0 2px; font-size: 26px; color: #1e4fa3; }
   #card .to { margin: 0 0 14px; font-size: 18px; color: #7b4b7b; }
   #msg { font-size: 17px; line-height: 1.7; text-align: left; min-height: 120px; white-space: pre-wrap; }
   .from { margin-top: 16px; text-align: right; font-style: italic; color: #7b4b7b; opacity: 0; transition: opacity 1s; }
@@ -68,15 +69,16 @@
 <script>
 /* ============ SỬA Ở ĐÂY ============ */
 const CONFIG = {
-  occasion: "Chúc mừng sinh nhật!",   // Tiêu đề thiệp
-  emoji: "🎂",                        // Biểu tượng lớn trên thiệp
-  toName: "bạn của tôi",              // Tên người nhận (có thể ghi đè bằng link ?to=Lan)
-  fromName: "Bạn thân của cậu",       // Tên người gửi
+  occasion: "Chúc mừng Ngày Quốc tế Đàn ông!",   // Tiêu đề thiệp
+  emoji: "📐",                        // Biểu tượng lớn trên thiệp
+  toName: "pé Híu",                       // Tên người nhận (có thể ghi đè bằng link ?to=Nam)
+  fromName: "Cục dàng của pé",            // Tên người gửi
   message:
-`Chúc cậu tuổi mới thật nhiều sức khỏe, nhiều niềm vui và luôn bình an.
-Mong những điều cậu ước sẽ lần lượt thành sự thật.
-Cảm ơn cậu vì đã luôn ở bên tớ. Sinh nhật vui nha! 🎉`,
-  floaters: ["🎈", "🎉", "💖", "✨", "🌸"], // Biểu tượng bay lên
+`Hôm nay là Ngày Quốc tế Đàn ông, pé hãy nghỉ ngơi đi nhé!
+Chúc pé mỗi ngày đều là một vectơ cùng phương, cùng chiều với niềm vui, độ dài càng lớn càng tốt.
+Mong mọi bài toán đều ra đáp án đúng, và điểm số của pé luôn là một vectơ hướng lên.
+Và nhớ nha, pé không bao giờ là vectơ-không đâu, vì pé quan trọng lắm đó! 💙`,
+  floaters: ["📐", "➡️", "✨", "💙", "⭐", "💯"], // Biểu tượng bay lên
   music: ""   // Đường dẫn nhạc, ví dụ "nhac.mp3" (để file cạnh trang này). Để trống nếu không dùng
 };
 /* =================================== */
