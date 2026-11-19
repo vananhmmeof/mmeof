@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gửi bạn một lời chúc</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    font-family: "Segoe UI", system-ui, sans-serif;
+    background: linear-gradient(160deg, #ffd6e7 0%, #e4d9ff 50%, #d3ecff 100%);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; color: #4a2c4a;
+  }
+
+  /* Biểu tượng bay lên */
+  .float { position: fixed; bottom: -40px; font-size: 24px; opacity: .8; pointer-events: none;
+           animation: rise linear forwards; }
+  @keyframes rise { to { transform: translateY(-115vh) rotate(40deg); opacity: 0; } }
+
+  .stage { width: min(92vw, 440px); text-align: center; position: relative; z-index: 1; }
+
+  /* Phong bì */
+  #envelope { cursor: pointer; transition: transform .3s; }
+  #envelope:hover { transform: scale(1.04); }
+  #envelope .icon { font-size: 110px; animation: bounce 1.6s ease-in-out infinite; }
+  @keyframes bounce { 50% { transform: translateY(-12px); } }
+  #envelope p { margin: 8px 0 0; font-size: 17px; }
+
+  /* Thiệp */
+  #card {
+    display: none; background: #fffdf9; border-radius: 20px; padding: 28px 24px;
+    box-shadow: 0 14px 40px rgba(120, 60, 120, .25); animation: pop .6s ease both;
+  }
+  @keyframes pop { from { transform: scale(.7) translateY(30px); opacity: 0; } }
+  #card .emoji { font-size: 54px; }
+  #card h1 { margin: 6px 0 2px; font-size: 26px; color: #c2185b; }
+  #card .to { margin: 0 0 14px; font-size: 18px; color: #7b4b7b; }
+  #msg { font-size: 17px; line-height: 1.7; text-align: left; min-height: 120px; white-space: pre-wrap; }
+  .from { margin-top: 16px; text-align: right; font-style: italic; color: #7b4b7b; opacity: 0; transition: opacity 1s; }
+  .from.show { opacity: 1; }
+  #music { position: fixed; top: 14px; right: 14px; border: 0; background: #fff; border-radius: 50%;
+           width: 42px; height: 42px; font-size: 20px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.15);
+           display: none; z-index: 2; }
+</style>
+</head>
+<body>
+  <button id="music" title="Bật/tắt nhạc">🎵</button>
+
+  <div class="stage">
+    <div id="envelope">
+      <div class="icon">💌</div>
+      <p>Bạn có một lời chúc. Bấm để mở nhé!</p>
+    </div>
+
+    <div id="card">
+      <div class="emoji" id="emoji"></div>
+      <h1 id="title"></h1>
+      <p class="to" id="to"></p>
+      <div id="msg"></div>
+      <div class="from" id="from"></div>
+    </div>
+  </div>
+
+  <audio id="audio" loop></audio>
+
+<script>
+/* ============ SỬA Ở ĐÂY ============ */
+const CONFIG = {
+  occasion: "Chúc mừng sinh nhật!",   // Tiêu đề thiệp
+  emoji: "🎂",                        // Biểu tượng lớn trên thiệp
+  toName: "bạn của tôi",              // Tên người nhận (có thể ghi đè bằng link ?to=Lan)
+  fromName: "Bạn thân của cậu",       // Tên người gửi
+  message:
+`Chúc cậu tuổi mới thật nhiều sức khỏe, nhiều niềm vui và luôn bình an.
+Mong những điều cậu ước sẽ lần lượt thành sự thật.
+Cảm ơn cậu vì đã luôn ở bên tớ. Sinh nhật vui nha! 🎉`,
+  floaters: ["🎈", "🎉", "💖", "✨", "🌸"], // Biểu tượng bay lên
+  music: ""   // Đường dẫn nhạc, ví dụ "nhac.mp3" (để file cạnh trang này). Để trống nếu không dùng
+};
+/* =================================== */
+
+// Cho phép đổi tên người nhận bằng link: loi-chuc.html?to=Lan
+const params = new URLSearchParams(location.search);
+const toName = params.get("to") || CONFIG.toName;
+
+document.getElementById("emoji").textContent = CONFIG.emoji;
+document.getElementById("title").textContent = CONFIG.occasion;
+document.getElementById("to").textContent = "Gửi " + toName;
+document.getElementById("from").textContent = "— " + CONFIG.fromName;
+
+// Biểu tượng bay lên
+function spawn() {
+  const el = document.createElement("div");
+  el.className = "float";
+  el.textContent = CONFIG.floaters[Math.floor(Math.random() * CONFIG.floaters.length)];
+  el.style.left = Math.random() * 100 + "vw";
+  el.style.fontSize = 18 + Math.random() * 26 + "px";
+  el.style.animationDuration = 5 + Math.random() * 5 + "s";
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 11000);
+}
+setInterval(spawn, 450);
+
+// Chữ hiện dần
+function typeText(text, target, done) {
+  let i = 0;
+  const timer = setInterval(() => {
+    target.textContent = text.slice(0, ++i);
+    if (i >= text.length) { clearInterval(timer); done && done(); }
+  }, 45);
+}
+
+// Mở phong bì
+document.getElementById("envelope").addEventListener("click", () => {
+  document.getElementById("envelope").style.display = "none";
+  document.getElementById("card").style.display = "block";
+  for (let i = 0; i < 25; i++) setTimeout(spawn, i * 60); // pháo hoa nhỏ
+  typeText(CONFIG.message, document.getElementById("msg"), () => {
+    document.getElementById("from").classList.add("show");
+  });
+
+  if (CONFIG.music) {
+    const audio = document.getElementById("audio");
+    const btn = document.getElementById("music");
+    audio.src = CONFIG.music;
+    audio.play().catch(() => {});
+    btn.style.display = "block";
+    btn.onclick = () => audio.paused ? audio.play() : audio.pause();
+  }
+});
+</script>
+</body>
+</html>
